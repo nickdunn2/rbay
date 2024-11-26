@@ -1,3 +1,5 @@
+import { client } from '$services/redis'
+
 const CachableRoutes: ReadonlyArray<string> = [
 	'/about',
 	'/privacy',
@@ -5,6 +7,17 @@ const CachableRoutes: ReadonlyArray<string> = [
 	'/auth/signup',
 ]
 
-export const getCachedPage = (route: string) => {};
+export const getCachedPage = (route: string) => {
+	if (CachableRoutes.includes(route)) {
+		return client.get(`pagecache#${route}`)
+	}
+	return null
+}
 
-export const setCachedPage = (route: string, page: string) => {};
+export const setCachedPage = (route: string, page: string) => {
+	if (CachableRoutes.includes(route)) {
+		return client.set(`pagecache#${route}`, page, {
+			EX: 2,
+		})
+	}
+}
