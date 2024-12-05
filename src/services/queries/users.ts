@@ -8,7 +8,7 @@ export const getUserByUsername = async (username: string) => {};
 export const getUserById = async (id: string) => {
 	const user = await client.hGetAll(usersKey(id))
 
-	return deserializeUser(id, user)
+	return deserialize(id, user)
 }
 
 export const createUser = async (attrs: CreateUserAttrs) => {
@@ -16,20 +16,20 @@ export const createUser = async (attrs: CreateUserAttrs) => {
 
 	await client.hSet(
 		usersKey(userId),
-		serializeUser(attrs)
+		serialize(attrs)
 	)
 
 	return userId
 }
 
-export const serializeUser = (user: CreateUserAttrs) => {
+export const serialize = (user: CreateUserAttrs) => {
 	return {
 		username: user.username,
 		password: user.password,
 	}
 }
 
-export const deserializeUser = (id: string, user: Record<string, string>) => {
+export const deserialize = (id: string, user: Record<string, string>) => {
 	return {
 		id,
 		username: user.username,

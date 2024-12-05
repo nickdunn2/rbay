@@ -9,12 +9,12 @@ export const getSession = async (id: string) => {
 		return null
 	}
 
-	return deserializeSession(id, session)
+	return deserialize(id, session)
 }
 
 export const saveSession = async (session: Session) => {}
 
-export const deserializeSession = (id: string, session: Record<string, string>) => {
+export const deserialize = (id: string, session: Record<string, string>) => {
 	return {
 		id,
 		userId: session.userId,
