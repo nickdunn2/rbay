@@ -22,14 +22,14 @@ export const createUser = async (attrs: CreateUserAttrs) => {
 	return userId
 }
 
-export const serialize = (user: CreateUserAttrs) => {
+const serialize = (user: CreateUserAttrs) => {
 	return {
 		username: user.username,
 		password: user.password,
 	}
 }
 
-export const deserialize = (id: string, user: Record<string, string>) => {
+const deserialize = (id: string, user: Record<string, string>) => {
 	return {
 		id,
 		username: user.username,
