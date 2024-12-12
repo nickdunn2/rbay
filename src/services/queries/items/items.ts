@@ -3,7 +3,7 @@ import { serialize } from './serialize'
 import { deserialize } from '$services/queries/items/deserialize'
 import { genId } from '$services/utils'
 import { client } from '$services/redis'
-import { itemsByViewsKey, itemsKey } from '$services/keys';
+import { itemsByEndingAtKey, itemsByViewsKey, itemsKey } from '$services/keys';
 
 export const getItem = async (id: string) => {
 	const item = await client.hGetAll(itemsKey(id))
@@ -37,6 +37,10 @@ export const createItem = async (attrs: CreateItemAttrs, userId: string) => {
 		client.zAdd(itemsByViewsKey(), {
 			value: id,
 			score: 0,
+		}),
+		client.zAdd(itemsByEndingAtKey(), {
+			value: id,
+			score: attrs.endingAt.toMillis(),
 		})
 	])
 
